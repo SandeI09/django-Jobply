@@ -1,0 +1,84 @@
+{% extends 'layouts/sub_base.html' %}
+{% load static %}
+
+{% block title %}
+  User Profile
+{% endblock %}
+
+{% block sub_content %}
+  <div class="row">
+    <div class="col-md-4">
+      {{request.user.userprofile.profile_picture.url}}
+      {% if request.user.userprofile.profile_picture %}
+        <img height="350px" width="350px" alt="" src="{{request.user.userprofile.profile_picture.url}}">
+      {% else %}
+        <img height="350px" width="350px" alt="" src="{% static 'main/pic.png' %}">
+      {% endif %}
+    </div>
+    <div class="col-md-8">
+      <h2>User Profile</h2>
+      <br />
+      <table class="table table-striped">
+        <tr>
+          <td>Name</td>
+          <td>{{ object.get_full_name }}</td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td>{{ object.email }}</td>
+        </tr>
+        <tr>
+          <td>Phone No</td>
+          <td>
+            {% if object.userprofile.phone %}
+              {{ object.userprofile.phone }}
+            {% else %}
+              ---
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td>Address</td>
+          <td>
+            {% if object.userprofile.address %}
+              {{ object.userprofile.address }}
+            {% else %}
+              ---
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td>Resume</td>
+          <td>
+            {% if object.userprofile.resume %}
+              {{ object.userprofile.resume }}
+            {% else %}
+              ---
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td>Bio</td>
+          <td>
+            {% if object.userprofile.bio %}
+              {{ object.userprofile.bio }}
+            {% else %}
+              ---
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td>Account status</td>
+          <td>
+            {% if object.is_verified %}
+              <span style="color: green;">Activated</span>
+            {% else %}
+              <span style="color: red;">Not Activated</span>
+            {% endif %}
+          </td>
+        </tr>
+      </table>
+      <a href="{% url 'user_profile_update' object.id %}" class="btn btn-success">Update</a>
+    </div>
+  </div>
+{% endblock %}

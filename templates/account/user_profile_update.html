@@ -1,0 +1,54 @@
+{% extends 'layouts/sub_base.html' %}
+{% load static %}
+
+{% block title %}
+  User Profile
+{% endblock %}
+
+{% block sub_content %}
+  <form action="" method="post" enctype="multipart/form-data">
+    <div class="row">
+      {% csrf_token %}
+      <div class="col-md-4">
+        {% if request.user.userprofile.profile_picture %}
+          <img src="{{ request.user.userprofile.profile_picture }}" height="350px" width="350px" alt="" />
+        {% else %}
+          <img src="{% static 'main/pic.png' %}" height="350px" width="350px" alt="" />
+        {% endif %}
+        {{ form.profile_picture }}
+      </div>
+      <div class="col-md-8">
+        <h2>User Profile</h2>
+        <br />
+        <table style="margin: 5px;" >
+          <tr>
+            <td style="padding: 5px;">
+              <label for="Phone-no">Phone No:</label>
+            </td>
+            <td style="padding: 5px;">{{ form.phone }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px;">
+              <label for="Address">Address:</label>
+            </td>
+            <td style="padding: 5px;">{{ form.address }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px;">
+              <label for="Resume">Resume:</label>
+            </td>
+            <td style="padding: 5px;">{{ form.resume }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px;">
+              <label for="Bio">Bio:</label>
+            </td>
+            <td style="padding: 5px;">{{ form.bio }}</td>
+          </tr>
+        </table>
+        <button type="submit" class="btn btn-success">Update</button>
+        <a href="{% url 'user_profile' object.id %}" class="btn btn-danger">Cancel</a>
+      </div>
+    </div>
+  </form>
+{% endblock %}

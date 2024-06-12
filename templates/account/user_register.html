@@ -1,0 +1,37 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+  User Register
+{% endblock %}
+
+{% block content %}
+  <div class="container" style="margin-top: 100px;">
+    <div class="row">
+      <div class="col-md-6">
+        <img src="{% static "account/login.svg" %}" alt="Login image" width="100%">
+      </div>
+      <div class="col-md-6">
+        <form method="post">
+        <a href="{% url 'home_page' %}" style="color: grey; text-decoration: none;"><i class="fa fa-home"></i>Home</a>
+        <h2 style=" margin: 20px 5px;">User Register</h2>
+          {% csrf_token %}
+          {% for field in form %}
+            <label>
+              {{ field.label }}
+              <span style="color: red;">{% if field.field.required %}*{% endif %}</span>
+            </label>
+            {{ field }}
+
+            {% if field.error %}
+              {{ field.error }}
+            {% endif %}
+          {% endfor %}
+          <br>
+          <button type="submit" class="btn btn-success">Submit</button> &nbsp;
+          <a href="{% url "user_login" %}" >Already have an account?</a>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

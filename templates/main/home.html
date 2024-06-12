@@ -1,0 +1,60 @@
+{% extends 'layouts/sub_base.html' %}
+{% load static %}
+
+{% block title %}
+  Home
+{% endblock %}
+
+{% block sub_content %}
+  {% if request.user.is_authenticated and not request.user.is_verified %}
+    <div class="" id="ac_message" style="background-color: lightcoral; color: white; width: 50%; padding: 5px; border-radius: 15px; margin: auto; text-align: center; align-items: center;">
+      <h5 style="display: flex; flex-direction: row; justify-content: space-between; padding:0 5px;">
+        <span>
+          Please activate your email!
+          <span style="font-size: 15px;"><a href="{% url 'resend_ac_activation' request.user.id %}">Resend Email activation?</a></span>
+        </span>
+        <span style="position: relative; top: 0; right: 0; color: red;"><a style="text-decoration: none; cursor: pointer;;" onclick="hideMessage()">X</a></span>
+      </h5>
+    </div>
+    <br /><br />
+  {% endif %}
+
+  <div style="display: flex; flex-wrap: wrap;">
+    {% for job in object_list %}
+      <div class="card" style="width: 18rem;flex: 1 1 30%; margin: 5px; padding: 10px;">
+        <img class="card-img-top" src="{% static 'main/job.webp' %}" alt="Card image cap" height="60%" width="40%" />
+        <hr />
+        <div class="card-body">
+          <h4 style="font-weight: bolder;"><a href="#" class="job-title" style="text-decoration: none; color: black;" onMouseOver="this.style.textDecoration='underline'" onMouseOut="this.style.textDecoration='none'">{{ job.title }}</a></h4>
+          <div class="card-text">
+            <i class="fa fa-map-marker mx-1"></i>{{ job.location }}
+          </div>
+          <div class="card-text">
+            <i class="fa fa-solid fa-list mx-1"></i>{{ job.category }}
+          </div>
+          <div class="card-text" style="color: red; font-size: 14px;">
+            <i class="fa fa-clock-o mx-1"></i>{{ job.apply_before }}
+          </div>
+          {% if request.user.is_authenticated %}
+            <div class="card-text">
+              <a href="" class="btn btn-outline-primary" style="float: right;">Apply Now</a>
+            </div>
+          {% else %}
+            <div class="card-text">
+              <a href="{% url 'user_login' %}" class="btn btn-outline-primary" style="float: right;">Apply Now</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    function hideMessage() {
+      messg = document.getElementById('ac_message')
+      messg.style.display = 'None'
+    }
+  </script>
+{% endblock %}
