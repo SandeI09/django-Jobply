@@ -25,7 +25,7 @@
         <img class="card-img-top" src="{% static 'main/job.webp' %}" alt="Card image cap" height="60%" width="40%" />
         <hr />
         <div class="card-body">
-          <h4 style="font-weight: bolder;"><a href="#" class="job-title" style="text-decoration: none; color: black;" onMouseOver="this.style.textDecoration='underline'" onMouseOut="this.style.textDecoration='none'">{{ job.title }}</a></h4>
+          <h4 style="font-weight: bolder;"><a href="{% url 'job_detail' job.id %}" class="job-title" style="text-decoration: none; color: black;" onMouseOver="this.style.textDecoration='underline'" onMouseOut="this.style.textDecoration='none'">{{ job.title }}</a></h4>
           <div class="card-text">
             <i class="fa fa-map-marker mx-1"></i>{{ job.location }}
           </div>
@@ -36,18 +36,41 @@
             <i class="fa fa-clock-o mx-1"></i>{{ job.apply_before }}
           </div>
           {% if request.user.is_authenticated %}
-            <div class="card-text">
-              <a href="" class="btn btn-outline-primary" style="float: right;">Apply Now</a>
+            <a href="#" data-toggle="modal" data-target="#apply_{{ job.id }}" class="btn btn-outline-primary" style="float: right">Apply Now</a>
+
+            <div class="modal fade" id="apply_{{ job.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Apply to job {{ job.title }}</h5>
+                    <span class="close" data-dismiss="modal" aria-label="Close" aria-hidden="true" style="margin-left: 15px; text-decoration: none; cursor: pointer">&times;</span>
+                  </div>
+                  <div class="modal-body">
+                    <p>Are you sure you want to apply for this job?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a href="{% url 'apply_job' job.id %}" type="button" class="btn btn-primary">Confirm</a>
+                  </div>
+                </div>
+              </div>
             </div>
           {% else %}
             <div class="card-text">
-              <a href="{% url 'user_login' %}" class="btn btn-outline-primary" style="float: right;">Apply Now</a>
+              {% if not request.user.is_authenticated %}
+                <a href="{% url 'user_login' %}" class="btn btn-outline-primary">Apply</a>
+              {% else %}
+
+              {% endif %}
             </div>
           {% endif %}
         </div>
       </div>
     {% endfor %}
   </div>
+  {% if is_paginated %}
+    {% include 'includes/pagination.html' %}
+  {% endif %}
 {% endblock %}
 
 {% block extra_js %}

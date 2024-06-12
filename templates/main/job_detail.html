@@ -1,0 +1,40 @@
+{% extends 'layouts/sub_base.html' %}
+
+{% block title %}
+  Job Detail
+{% endblock %}
+
+{% block sub_content %}
+  <h2>Job detail</h2><br />
+  <p>
+    <b>Title</b><br />{{ job.title }}
+  </p>
+  <p>
+    <b>Description</b><br /> {{ job.description }}
+  </p>
+  <p>
+    <b>Location</b><br /> {{ job.location }}
+  </p>
+  <p>
+    <b>Category</b><br /> {{ job.category.title }}
+  </p>
+  <p>
+    <b>Application Deadline</b><br /> {{ job.apply_before }}
+  </p>
+  <p>
+    <b>Experience Required</b><br /> {% if job.experience_required %}
+      {{ job.experience_required }}
+    {% else %}
+      ---
+    {% endif %}
+  </p>
+
+  {% if not request.user.is_authenticated %}
+    {% if has_applied %}
+      <a href="" class="btn btn-primary disabled">Applied</a>
+    {% else %}
+      <a href="" class="btn btn-primary">Apply now</a>
+    {% endif %}
+    <a href="{% url 'user_login' %}" class="btn btn-outline-primary">Apply</a>
+  {% endif %}
+{% endblock %}

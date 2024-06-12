@@ -51,7 +51,7 @@
           <td>Resume</td>
           <td>
             {% if object.userprofile.resume %}
-              {{ object.userprofile.resume }}
+              <a href="{{ object.userprofile.resume }}">View Resume</a>
             {% else %}
               ---
             {% endif %}

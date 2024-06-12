@@ -1,0 +1,42 @@
+{% extends 'layouts/sub_base.html' %}
+{% load static %}
+
+{% block title %}
+  My Jobs
+{% endblock %}
+
+{% block sub_content %}
+  <div style="display: flex; flex-wrap: wrap;">
+    {% for application in object_list %}
+      <div class="card" style="width: 18rem;flex: 1 1 30%; margin: 5px; padding: 10px;" style="max-width: 500px; max-height: 600px;">
+        <img class="card-img-top" src="{% static 'main/job.webp' %}" alt="Card image cap" height="60%" width="40%" />
+        <hr />
+        <div class="card-body">
+          <h4 style="font-weight: bolder;"><a href="{% url 'job_detail' application.job.id %}" class="job-title" style="text-decoration: none; color: black;" onMouseOver="this.style.textDecoration='underline'" onMouseOut="this.style.textDecoration='none'">{{ application.job.title }}</a></h4>
+          <div class="card-text">
+            <i class="fa fa-map-marker mx-1"></i>{{ application.job.location }}
+          </div>
+          <div class="card-text">
+            <i class="fa fa-solid fa-list mx-1"></i>{{ application.job.category }}
+          </div>
+          <div class="card-text" style="color: red; font-size: 14px;">
+            <i class="fa fa-clock-o mx-1"></i>{{ application.job.apply_before }}
+          </div>
+          <p>Status: {{application.status}}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  {% if is_paginated %}
+    {% include 'includes/pagination.html' %}
+  {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    function hideMessage() {
+      messg = document.getElementById('ac_message')
+      messg.style.display = 'None'
+    }
+  </script>
+{% endblock %}
